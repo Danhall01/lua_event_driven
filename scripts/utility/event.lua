@@ -14,7 +14,6 @@ function event_t:clear()
     self.eventsList_t = {};
 end
 
-
 function event_t:on(name, callback)
     if not self.eventsList_t[name] then
         self.eventsList_t[name] = {};
@@ -26,12 +25,12 @@ function event_t:on(name, callback)
     table.insert(self.eventsList_t[name], item_t);
 
     return function()
-        self.remove(name, callback);
+        self:remove(name, callback);
     end
 end
 function event_t:remove(name, callback)
     for i, _callback in ipairs(self.eventsList_t[name] or {}) do
-        if _callback == callback then
+        if _callback.callable == callback then
             table.remove(self.eventsList_t[name], i);
         end
     end
