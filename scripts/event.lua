@@ -1,52 +1,52 @@
 print("event.lua")
 
 
-local event = {
-    eventsList = {},
+local event_t = {
+    eventsList_t = {},
 }
 
-function event:new()
-    self = setmetatable({}, {__index = event});
-    self.eventsList = {};
+function event_t:new()
+    self = setmetatable({}, {__index = event_t});
+    self.eventsList_t = {};
     return self;
 end
-function event:clear()
-    self.eventsList = {};
+function event_t:clear()
+    self.eventsList_t = {};
 end
 
 
-function event:on(name, callback)
-    if not self.eventsList[name] then
-        self.eventsList[name] = {};
+function event_t:on(name, callback)
+    if not self.eventsList_t[name] then
+        self.eventsList_t[name] = {};
     end
-    local item = {
+    local item_t = {
         callable = callback,
         enabled = true
     }
-    table.insert(self.eventsList[name], item);
+    table.insert(self.eventsList_t[name], item_t);
 
     return function()
         self.remove(name, callback);
     end
 end
-function event:remove(name, callback)
-    for i, _callback in ipairs(self.eventsList[name] or {}) do
+function event_t:remove(name, callback)
+    for i, _callback in ipairs(self.eventsList_t[name] or {}) do
         if _callback == callback then
-            table.remove(self.eventsList[name], i);
+            table.remove(self.eventsList_t[name], i);
         end
     end
 end
 
-function event:trigger(name, ...)
-    for _, item in ipairs(self.eventsList[name] or {}) do
-        if item.enabled then
-            item.callable(...);
+function event_t:trigger(name, ...)
+    for _, item_t in ipairs(self.eventsList_t[name] or {}) do
+        if item_t.enabled then
+            item_t.callable(...);
         end
     end
 end
 
 
-return event:new();
+return event_t:new();
 -- Goal:
 -- event = require('event.lua')
 -- event.on("eventName", function()
